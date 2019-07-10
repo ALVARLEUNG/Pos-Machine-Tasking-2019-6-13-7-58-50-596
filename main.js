@@ -11,20 +11,6 @@ const barcodeListsData = [
     {"id": "0010", "name" : "Fanta", "price": 12}
 ];
 
-// const isBarcodeVaild = (barcodeId, barcodeListsData) => {
-// 	let isExists = false;
-//     for (let i = 0; i<barcodeListsData.length; i++) {
-//     	if(barcodeListsData[i].id === barcodeId) {
-// 			isExists = true;
-// 			break
-// 		}
-//     }
-//     return isExists;
-// }
-
-// const barcodeListItems = ( barcodeListsData)
-
-
 const isBarcodeExists = (barcodeId) => {
     let existBarcode = null;
     for (let i = 0; i<barcodeListsData.length; i++) {
@@ -38,31 +24,19 @@ const isBarcodeExists = (barcodeId) => {
     return existBarcode;
 }
 
-// function isBarcodeExists(barcodeId) {
-//     let isExists = null;
-//     for (let i = 0; i<barcodeListsData.length; i++) {
-//     	if(barcodeListsData[i].id === barcodeId) {
-//     		isExists = barcodeListsData[i];
-//     		break;
-//     	}else{
-// 			isExists = null;
-// 		}
-//     }
-//     return isExists;
-// }
-
-const printReciptByBarcodeList = (batcodeList) =>{
-	let resultRecipt = '';
-	let errorBarcode = '[ERROR]:datebase not found:';
-	let errorLength = errorBarcode.length;
+const generateResultList = (batcodeList, errorBarcode) => {
 	let resultList = [];
-		for(let i = 0; i<batcodeList.length; i++) {
+	for(let i = 0; i<batcodeList.length; i++) {
 		let barcode = isBarcodeExists(batcodeList[i]);
 		if( barcode != null) {
-			if(resultList.length != 0) {
+			if(resultList.length > 0) {
 				for (let i =0; i<resultList.length; i++) {
-					if (resultList[i].key.id === barcode.id) {
+					if (resultList[i].key.id == barcode.id) {
 						resultList[i].value++;
+						break;
+					}else {
+						resultList.push({key:barcode, value:1});
+						break;
 					}
 				}
 			}else{
@@ -72,7 +46,14 @@ const printReciptByBarcodeList = (batcodeList) =>{
 			errorBarcode += batcodeList[i];
 		}
 	}
-	
+	return resultList;
+}
+
+const printReciptByBarcodeList = (batcodeList) =>{
+	let resultRecipt = '';
+	let errorBarcode = '[ERROR]:datebase not found:';
+	let errorLength = errorBarcode.length;
+	let resultList = generateResultList(batcodeList, errorBarcode);
 	let sum = 0;
 	for (let i = 0; i<resultList.length; i++) {
 		resultRecipt += `${resultList[i].key.name} ${resultList[i].key.price} ${resultList[i].value}\n`;
@@ -84,9 +65,28 @@ const printReciptByBarcodeList = (batcodeList) =>{
 	}else{
 		return `Receipts \n------------------------------------------------------------\n${resultRecipt}\n------------------------------------------------------------\n Price:${sum}`;
 	}
-	
-
-
 } 
 
-module.exports = {isBarcodeExists, printReciptByBarcodeList};
+
+const throwCondition = (words, condition) => {
+	return words.filter(condition);
+}
+
+const mapObjectKeyToCollection = (collectionA) => {
+    // let collectionC = [];
+    // for (let i =0; i<collectionA.length; i++) {
+    //     collectionC.push(collectionA[i].key);
+    // }
+	// return collectionC;
+	return collectionA.collectValue;
+}
+
+// Array.prototype.collectValue()= function (){
+// 	let collectionC = [];
+//     for (let i =0; i<this.length; i++) {
+//         collectionC.push(this[i].key);
+//     }
+//     return collectionC;
+// }
+
+module.exports = {isBarcodeExists, printReciptByBarcodeList, throwCondition, mapObjectKeyToCollection};
