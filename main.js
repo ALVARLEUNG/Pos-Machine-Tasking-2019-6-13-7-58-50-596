@@ -12,13 +12,13 @@ const barcodeListsData = [
 ];
 
 function isBarcodeExists(barcodeId) {
-    var isExists = {};
+    var isExists = null;
     for (let i = 0; i<barcodeListsData.length; i++) {
     	if(barcodeListsData[i].id === barcodeId) {
     		isExists = barcodeListsData[i];
     		break;
     	}else{
-			isExists = {};
+			isExists = null;
 		}
     }
     return isExists;
@@ -51,7 +51,7 @@ function printReciptByBarcodeList(batcodeList) {
 		sum += resultList[i].key.price * resultList[i].value;
 	}
 	
-	return 'Receipts \n'+errorBarcode+'\n'+'------------------------------------------------------------\n'
+	return 'Receipts \n------------------------------------------------------------\n'
 			+resultRecipt+'\n'+'------------------------------------------------------------\n Price:'+sum;
 	
 } 
