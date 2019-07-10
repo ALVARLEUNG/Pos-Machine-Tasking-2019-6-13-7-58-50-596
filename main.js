@@ -11,25 +11,53 @@ const barcodeListsData = [
     {"id": "0010", "name" : "Fanta", "price": 12}
 ];
 
-function isBarcodeExists(barcodeId) {
-    var isExists = null;
+// const isBarcodeVaild = (barcodeId, barcodeListsData) => {
+// 	let isExists = false;
+//     for (let i = 0; i<barcodeListsData.length; i++) {
+//     	if(barcodeListsData[i].id === barcodeId) {
+// 			isExists = true;
+// 			break
+// 		}
+//     }
+//     return isExists;
+// }
+
+// const barcodeListItems = ( barcodeListsData)
+
+
+const isBarcodeExists = (barcodeId) => {
+    let existBarcode = null;
     for (let i = 0; i<barcodeListsData.length; i++) {
     	if(barcodeListsData[i].id === barcodeId) {
-    		isExists = barcodeListsData[i];
+    		existBarcode = barcodeListsData[i];
     		break;
     	}else{
-			isExists = null;
+			existBarcode = null;
 		}
     }
-    return isExists;
+    return existBarcode;
 }
 
-function printReciptByBarcodeList(batcodeList) {
-	var resultRecipt = '';
-	var errorBarcode = '';//[ERROR]:datebase not found:
-	var resultList = [];
+// function isBarcodeExists(barcodeId) {
+//     let isExists = null;
+//     for (let i = 0; i<barcodeListsData.length; i++) {
+//     	if(barcodeListsData[i].id === barcodeId) {
+//     		isExists = barcodeListsData[i];
+//     		break;
+//     	}else{
+// 			isExists = null;
+// 		}
+//     }
+//     return isExists;
+// }
+
+const printReciptByBarcodeList = (batcodeList) =>{
+	let resultRecipt = '';
+	let errorBarcode = '[ERROR]:datebase not found:';
+	let errorLength = errorBarcode.length;
+	let resultList = [];
 		for(let i = 0; i<batcodeList.length; i++) {
-		var barcode = isBarcodeExists(batcodeList[i]);
+		let barcode = isBarcodeExists(batcodeList[i]);
 		if( barcode != null) {
 			if(resultList.length != 0) {
 				for (let i =0; i<resultList.length; i++) {
@@ -45,15 +73,20 @@ function printReciptByBarcodeList(batcodeList) {
 		}
 	}
 	
-	var sum = 0;
+	let sum = 0;
 	for (let i = 0; i<resultList.length; i++) {
-		resultRecipt += resultList[i].key.name +' '+resultList[i].key.price+' '+ resultList[i].value+'\n'
+		resultRecipt += `${resultList[i].key.name} ${resultList[i].key.price} ${resultList[i].value}\n`;
 		sum += resultList[i].key.price * resultList[i].value;
 	}
+
+	if (errorBarcode.length > errorLength) {
+		return `Receipts \n------------------------------------------------------------\n${resultRecipt}\n------------------------------------------------------------\n Price:${sum}\n${errorBarcode}`;
+	}else{
+		return `Receipts \n------------------------------------------------------------\n${resultRecipt}\n------------------------------------------------------------\n Price:${sum}`;
+	}
 	
-	return 'Receipts \n------------------------------------------------------------\n'
-			+resultRecipt+'\n'+'------------------------------------------------------------\n Price:'+sum;
-	
+
+
 } 
 
 module.exports = {isBarcodeExists, printReciptByBarcodeList};
