@@ -81,6 +81,20 @@ const mapObjectKeyToCollection = (collectionA) => {
 	return collectionA.collectValue;
 }
 
+const throwCondition = (words, condition) => {
+    return words.filterByCondition(condition);
+	// return words.filter(condition);
+}
+
+Array.prototype.filterByCondition = function (condition) {
+    let arr = [];
+    for (let i = 0; i<this.length; i++) {
+        if(condition(this)) {
+            arr.push(this[i]);
+        }
+    }
+    return arr;
+}
 // Array.prototype.collectValue()= function (){
 // 	let collectionC = [];
 //     for (let i =0; i<this.length; i++) {

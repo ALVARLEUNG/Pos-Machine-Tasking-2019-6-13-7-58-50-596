@@ -38,6 +38,3 @@ it ('test1', () => {
     expect(throwCondition(['0001'], condition)).toStrictEqual(['0001']);
 });
 
-// it ('test2', () => {
-//     expect(mapObjectKeyToCollection([{key:'0001'}], condition)).toStrictEqual(['0001']);
-// });
